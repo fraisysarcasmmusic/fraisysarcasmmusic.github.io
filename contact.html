@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Fraisy Sarcasm Music</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --deep-black: #0a0a0a;
+            --rich-black: #1a1a1a;
+            --midnight: #0d1117;
+            --gold: #d4af37;
+            --bright-gold: #f4d03f;
+            --teal: #5dade2;
+            --dark-teal: #2874a6;
+            --soft-teal: #85c1e9;
+            --star-white: #f8f8ff;
+            --silver: #c0c0c0;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--deep-black) 0%, var(--midnight) 50%, var(--rich-black) 100%);
+            color: var(--star-white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+            opacity: 0.6;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--gold);
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--bright-gold) 0%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--silver);
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .page-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 700;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--bright-gold) 0%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--soft-teal);
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .contact-message {
+            font-size: 1.2rem;
+            color: var(--star-white);
+            text-align: center;
+            margin-bottom: 50px;
+            line-height: 1.8;
+        }
+
+        /* Social Media Grid */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .social-card {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--dark-teal);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .social-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.5);
+        }
+
+        .social-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .social-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .social-handle {
+            font-size: 1.2rem;
+            color: var(--teal);
+            font-style: italic;
+        }
+
+        .social-card:hover .social-name {
+            color: var(--bright-gold);
+        }
+
+        .social-card:hover .social-handle {
+            color: var(--gold);
+        }
+
+        /* Additional Info */
+        .info-box {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .info-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .info-box p {
+            font-size: 1.2rem;
+            color: var(--soft-teal);
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 2px solid var(--gold);
+            margin-top: auto;
+        }
+
+        .copyright {
+            color: var(--silver);
+            opacity: 0.7;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .social-card {
+                padding: 30px;
+            }
+
+            .social-icon {
+                font-size: 3rem;
+            }
+
+            .info-box {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">FRAISY SARCASM</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="mes-chansons.html">Mes Chansons</a></li>
+                <li><a href="paroles.html">Paroles</a></li>
+                <li><a href="galerie.html">Galerie</a></li>
+                <li><a href="a-propos.html">À Propos</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1 class="page-title">Contact</h1>
+            <p class="subtitle">Restons connectés</p>
+            <p class="contact-message">
+                Envie de discuter de musique, de collaborer, ou simplement de dire bonjour?<br>
+                Retrouve-moi sur mes réseaux sociaux!
+            </p>
+        </header>
+
+        <!-- Social Media Cards -->
+        <div class="social-grid">
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/@FraisySarcasmMusic" class="social-card" target="_blank">
+                <span class="social-icon">🎥</span>
+                <div class="social-name">YouTube</div>
+                <div class="social-handle">@FraisySarcasmMusic</div>
+            </a>
+
+            <!-- Spotify -->
+            <a href="https://open.spotify.com/intl-fr/artist/6VoXFwz3pMg7doqbR6f9lB" class="social-card" target="_blank">
+                <span class="social-icon">🎵</span>
+                <div class="social-name">Spotify</div>
+                <div class="social-handle">Fraisy Sarcasm Music</div>
+            </a>
+
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@fraisy.sarcasm.mu" class="social-card" target="_blank">
+                <span class="social-icon">🎬</span>
+                <div class="social-name">TikTok</div>
+                <div class="social-handle">@fraisy.sarcasm.mu</div>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/fraisy.sarcasmusic" class="social-card" target="_blank">
+                <span class="social-icon">📸</span>
+                <div class="social-name">Instagram</div>
+                <div class="social-handle">@fraisy.sarcasmusic</div>
+            </a>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="info-box">
+            <h3>📬 Me Contacter</h3>
+            <p>
+                Pour toute question, collaboration ou simplement pour échanger,<br>
+                n'hésite pas à me contacter via TikTok ou Instagram!<br>
+                Je réponds avec plaisir à tous vos messages. 💜
+            </p>
+        </div>
+
+        <footer>
+            <p class="copyright">© 2026 Fraisy Sarcasm Music · Créations IA avec Suno & Whisk</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create starfield
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 150;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+    </script>
+</body>
+</html>
