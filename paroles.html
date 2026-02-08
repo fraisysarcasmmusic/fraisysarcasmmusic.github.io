@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paroles - Fraisy Sarcasm Music</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --deep-black: #0a0a0a;
+            --rich-black: #1a1a1a;
+            --midnight: #0d1117;
+            --gold: #d4af37;
+            --bright-gold: #f4d03f;
+            --teal: #5dade2;
+            --dark-teal: #2874a6;
+            --soft-teal: #85c1e9;
+            --star-white: #f8f8ff;
+            --silver: #c0c0c0;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--deep-black) 0%, var(--midnight) 50%, var(--rich-black) 100%);
+            color: var(--star-white);
+            min-height: 100vh;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+            opacity: 0.6;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--gold);
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--bright-gold) 0%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--silver);
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .page-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 700;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--bright-gold) 0%, var(--teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--soft-teal);
+            letter-spacing: 2px;
+        }
+
+        /* Language Filter */
+        .filter-section {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .filter-label {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--gold);
+            border-radius: 25px;
+            color: var(--gold);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--gold);
+            color: var(--deep-black);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Lyrics Cards */
+        .lyrics-grid {
+            display: grid;
+            gap: 40px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .lyric-card {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--dark-teal);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .lyric-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .lyric-header {
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .song-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .song-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 1rem;
+            color: var(--teal);
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-tag {
+            background: rgba(93, 173, 226, 0.2);
+            padding: 5px 15px;
+            border-radius: 15px;
+            border: 1px solid var(--teal);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .lyric-content {
+            font-size: 1.3rem;
+            line-height: 2;
+            color: var(--star-white);
+            white-space: pre-line;
+        }
+
+        .lyric-content p {
+            margin-bottom: 25px;
+        }
+
+        .verse {
+            margin-bottom: 30px;
+        }
+
+        .streaming-links {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stream-btn {
+            padding: 12px 25px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .stream-btn:hover {
+            background: var(--gold);
+            color: var(--deep-black);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            padding: 40px 20px;
+            border-top: 2px solid var(--gold);
+        }
+
+        .copyright {
+            color: var(--silver);
+            opacity: 0.7;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .lyric-card {
+                padding: 30px 20px;
+            }
+
+            .song-title {
+                font-size: 2rem;
+            }
+
+            .lyric-content {
+                font-size: 1.1rem;
+                line-height: 1.8;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">FRAISY SARCASM</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="#">Mes Chansons</a></li>
+                <li><a href="paroles.html" class="active">Paroles</a></li>
+                <li><a href="#">Galerie</a></li>
+                <li><a href="#">À Propos</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1 class="page-title">Paroles</h1>
+            <p class="subtitle">Les mots derrière la musique</p>
+        </header>
+
+        <!-- Language Filter -->
+        <div class="filter-section">
+            <div class="filter-label">Filtrer par langue:</div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-lang="all">Toutes</button>
+                <button class="filter-btn" data-lang="en">English</button>
+                <button class="filter-btn" data-lang="fr">Français</button>
+                <button class="filter-btn" data-lang="es">Español</button>
+                <button class="filter-btn" data-lang="tr">Türkçe</button>
+            </div>
+        </div>
+
+        <!-- Lyrics Grid -->
+        <div class="lyrics-grid">
+            
+            <!-- SONG 1: The Garden Remembers -->
+            <div class="lyric-card" data-language="en">
+                <div class="lyric-header">
+                    <h2 class="song-title">The Garden Remembers</h2>
+                    <div class="song-meta">
+                        <span class="meta-item">
+                            <span class="language-tag">English</span>
+                        </span>
+                        <span class="meta-item">🎵 Fraisy Sarcasm Music</span>
+                    </div>
+                </div>
+                <div class="lyric-content">
+<p class="verse">Red petals still fall where we used to stand
+Your fingerprints linger on marble and sand
+I wear the same dress you tore with your eyes
+The fabric still carries the weight of your lies</p>
+
+<p class="verse">Moonlight keeps asking why I return each night
+Steps echo empty on stones that once felt right
+Gold on my throat burns colder than truth
+Every jewel is a promise you never kept</p>
+
+<p class="verse">The garden remembers what we tried to forget
+Thorns grew where kisses were planted instead
+I come back to bleed on the roses we made
+Love was the dagger you left in my chest</p>
+
+<p class="verse">Your shadow still walks through the arches at dawn
+I follow the scent of the man who is gone
+My voice breaks on words you will never hear
+Time doesn't heal when the wound is still here</p>
+
+<p class="verse">The garden remembers
+I never will leave
+This beautiful prison you built out of me</p>
+                </div>
+                <div class="streaming-links">
+                    <a href="https://www.youtube.com/@FraisySarcasmMusic" class="stream-btn" target="_blank">🎥 YouTube</a>
+                    <a href="https://open.spotify.com/intl-fr/artist/6VoXFwz3pMg7doqbR6f9lB" class="stream-btn" target="_blank">🎵 Spotify</a>
+                </div>
+            </div>
+
+            <!-- TEMPLATE POUR AJOUTER D'AUTRES CHANSONS -->
+            <!--
+            <div class="lyric-card" data-language="fr">
+                <div class="lyric-header">
+                    <h2 class="song-title">Titre de ta Chanson</h2>
+                    <div class="song-meta">
+                        <span class="meta-item">
+                            <span class="language-tag">Français</span>
+                        </span>
+                        <span class="meta-item">🎵 Fraisy Sarcasm Music</span>
+                    </div>
+                </div>
+                <div class="lyric-content">
+<p class="verse">Premier couplet ici
+Ligne 2
+Ligne 3
+Ligne 4</p>
+
+<p class="verse">Deuxième couplet
+Ligne 2
+Ligne 3</p>
+                </div>
+                <div class="streaming-links">
+                    <a href="LIEN_YOUTUBE" class="stream-btn" target="_blank">🎥 YouTube</a>
+                    <a href="LIEN_SPOTIFY" class="stream-btn" target="_blank">🎵 Spotify</a>
+                </div>
+            </div>
+            -->
+
+        </div>
+
+        <footer>
+            <p class="copyright">© 2026 Fraisy Sarcasm Music · Créations IA avec Suno & Whisk</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create starfield
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 150;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Language filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const lyricCards = document.querySelectorAll('.lyric-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const lang = button.dataset.lang;
+                
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Filter cards
+                lyricCards.forEach(card => {
+                    if (lang === 'all' || card.dataset.language === lang) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeInUp 0.5s ease-out';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        createStars();
+    </script>
+</body>
+</html>
