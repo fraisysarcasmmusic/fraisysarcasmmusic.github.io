@@ -260,8 +260,9 @@
 
         /* Themes Section */
         .themes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 20px;
             margin-top: 30px;
         }
@@ -276,6 +277,7 @@
             color: var(--teal);
             transition: all 0.3s ease;
             cursor: default;
+            min-width: 200px;
         }
 
         .theme-tag:hover {
